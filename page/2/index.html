@@ -5,11 +5,11 @@
   
 
   
-  <title>Category: Uncategorized | Hexo</title>
+  <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/categories/Uncategorized/index.html">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
@@ -62,67 +62,103 @@
       <div class="outer">
         <section id="main">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2016/09/30/microsoft-intune-per-app-vpn-for-android/" class="archive-article-date">
-  <time datetime="2016-09-30T16:58:14.000Z" itemprop="datePublished">Sep 30</time>
+    <article id="post-failed-resolve-select-task-sequence" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/14/failed-resolve-select-task-sequence/" class="article-date">
+  <time datetime="2015-01-14T21:37:47.000Z" itemprop="datePublished">2015-01-14</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SCCM/">SCCM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/09/30/microsoft-intune-per-app-vpn-for-android/">Microsoft Intune Per-App VPN for Android</a>
+      <a class="article-title" href="/2015/01/14/failed-resolve-select-task-sequence/">Failed to Resolve Select Task Sequence...</a>
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>I was working at a client with SCCM 2012 R2 OSD configuration and I was getting the error “Failed to Resolve Select Task Sequence Dependencies” every time testing the task sequence. I checked for the usual suspects and ensured that all applications and packages were distributed to the Distribution Points.</p>
+<p>Initially, I thought the application that was causing the error was corrupted. So I went ahead and refreshed the content (“Update Content” as it’s formally known”). I attempted to run the task sequence again and then noticed that the same error came up referencing a different application. I began to see a pattern and all the applications that were referenced in the error all had version 1.</p>
+<p>To increment all application versions, I used the following script that I pieced together from other sources:</p>
+<p><pre class="lang:ps decode:true" title="UpdateDP">Import-Module ‘C:\Program Files (x86)\Microsoft Configuration Manager\bin\ConfigurationManager.psd1’<br>CD SiteCode:<br>$applications=Get-CMApplication |Select-Object ApplicationName,LocalizedDisplayName, CIVersion |Where-Object CIVersion -eq “1”<br>foreach ($app in $applications)<br>{<br>$app=$app.LocalizedDisplayName<br>Write-host “Application :” “$app” -ForegroundColor DarkCyan</pre></p>
+<p>$dpttypes=Get-CMDeploymentType -ApplicationName $app</p>
+<p>foreach ($dpt in $dpttypes)<br>{<br>$dptname=$dpt.LocalizedDisplayName<br>Write-Host “Deployment Type:” “$dptname” -ForegroundColor DarkGreen<br>Update-CMDistributionPoint -ApplicationName $app -DeploymentTypeName $dptname<br>}<br>}<br>Note: Even after changing all versions to 2, I still had one or two apps needed to be incremented before I could proceed with the TS.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/01/14/failed-resolve-select-task-sequence/" data-id="cjuenqhng000g3cup08xx02tc" class="article-share-link">Share</a>
+      
+      
+    </footer>
   </div>
-</article>
   
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/02/01/detachingattaching-sccm-2012-database/" class="archive-article-date">
-  <time datetime="2015-02-01T09:03:35.000Z" itemprop="datePublished">Feb 1</time>
+</article>
+
+
+  
+    <article id="post-a-read-operation-on-a-large-object-failed" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/02/a-read-operation-on-a-large-object-failed/" class="article-date">
+  <time datetime="2015-01-03T02:00:47.000Z" itemprop="datePublished">2015-01-02</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SCCM/">SCCM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/02/01/detachingattaching-sccm-2012-database/">Detaching/Attaching SCCM 2012 Database</a>
+      <a class="article-title" href="/2015/01/02/a-read-operation-on-a-large-object-failed/">A read operation on a large object failed..</a>
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>After logging into my SCCM 2012 R2 server and running a report, I was getting an error to check network connectivity to the Report Server. After logging into my SQL 2012 SP2 server, I saw the following error message every time I ran a report:</p>
+<p>_Log Name: Application<br>Source: MSSQLSERVER<br>Date: 12/5/2014 10:32:42 PM<br>Event ID: 7886<br>Task Category: Server<br>Level: Error<br>Keywords: Classic<br>_<br><strong>Description</strong>:<br>_A read operation on a large object failed while sending data to the client. A common cause for this is if the application is running in READ UNCOMMITTED isolation level. This connection will be terminated.<br>_<br>I checked the database size and initially thought the autogrowth threshold was low. I was still getting the error after adjusting the autogrowth so I then thought it might be an issue with the database itself and ran a DB check.</p>
+<p><pre class="lang:default decode:true" title="DBCheck SQL">ALTER DATABASE ReportServerDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;<br>BEGIN TRANSACTION;<br>DBCC CHECKDB (‘ReportServerDB’, REPAIR_ALLOW_DATA_LOSS);<br>ALTER DATABASE ReportServerDB SET MULTI_USER;</pre><br>I had to run these commands couple of times to fix the corruption in the database.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="cjuenqhms00023cupqs8h512y" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
+
+    </footer>
   </div>
+  
 </article>
-  
-  
-    </div></section>
+
+
   
 
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 </section>
         
