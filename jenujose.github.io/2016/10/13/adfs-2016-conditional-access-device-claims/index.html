@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en-us">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="During a recent EMS POC engagement, my customer asked if there was a way to bypass multi-factor authentication for mobile devices that were registered with Intune/managed by the company. In addition t">
+<meta name="keywords">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ADFS, Device Claims & Conditional Access">
+<meta property="og:url" content="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/index.html">
+<meta property="og:site_name" content="Notes from the field...">
+<meta property="og:description" content="During a recent EMS POC engagement, my customer asked if there was a way to bypass multi-factor authentication for mobile devices that were registered with Intune/managed by the company. In addition t">
+<meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48_thumb.png">
+<meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-7.png">
+<meta property="og:image" content="https://markparris.files.wordpress.com/2015/11/nitialize-adsyncdomainjoinedcomputersync.jpg?w=881&h=618">
+<meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-1.png">
+<meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-2.png">
+<meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-3.png">
+<meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-4.png">
+<meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image27_thumb.png">
+<meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-6.png">
+<meta property="og:updated_time" content="2017-04-04T11:36:29.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ADFS, Device Claims & Conditional Access">
+<meta name="twitter:description" content="During a recent EMS POC engagement, my customer asked if there was a way to bypass multi-factor authentication for mobile devices that were registered with Intune/managed by the company. In addition t">
+<meta name="twitter:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48_thumb.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/"/>
+
+
+
+
+
+  <title>ADFS, Device Claims & Conditional Access | Notes from the field...</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en-us">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Notes from the field...</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jenu Jose">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes from the field...">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ADFS, Device Claims & Conditional Access</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-13T01:28:32-05:00">
+                2016-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ADFS/" itemprop="url" rel="index">
+                    <span itemprop="name">ADFS</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ADFS/Azure/" itemprop="url" rel="index">
+                    <span itemprop="name">Azure</span>
+                  </a>
+                </span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ADFS/Azure/EMS/" itemprop="url" rel="index">
+                    <span itemprop="name">EMS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/13/adfs-2016-conditional-access-device-claims/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2016/10/13/adfs-2016-conditional-access-device-claims/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>During a recent EMS POC engagement, my customer asked if there was a way to bypass multi-factor authentication for mobile devices that were registered with Intune/managed by the company. In addition they wanted to be able to get device claims from Windows 10 devices as well so they can determine if the device was being managed by SCCM.</p>
+<p>This seems like a pretty reasonable and simple ask until you actually realize the solution entails multiple components to get it properly working.</p>
+<p>After some research, I realized I needed ADFS, Azure AD Connect, Azure Device Registration (For Windows devices) and Intune to get this working.</p>
+<p>Now for some background..</p>
+<ul>
+<li>Azure Device Registration – As part of Intune enrollment devices are registered to Azure AD using the ADRS service. This allows a record for the device to be created which contains information about the device. ADRS also supports the registration of domain joined computers as well. We’ll be be using this service to register Windows 10 domain joined computers so that Azure AD knows about them.  </li><li>ADFS – Since ADFS is where the authentication for the user happens, we can get information about the device and the user. What we are interested in are device claims which give us more information about the device that’s being authenticated.  </li><li>Azure AD Connect – Azure AD Connect is a tool used to synchronized your Active Directory to the cloud. It also allows provides a very important feature called Device Write-back. This essentially brings down the objects that are registered to Azure AD to Active Directory so ADFS knows about them. </li>
+</ul>
+<p><strong><u>Azure Device Registration/Azure AD Connect</u></strong></p>
+<p>So how does devices get to Azure AD?</p>
+<ul>
+<li>Well, mobile devices are easy because part of the Intune enrollment process involved the registration of the device to Azure AD.  </li><li>Now what about Windows devices (7,8,10)? It turns out there’s a mechanism called Azure Device Registration for Windows domain joined devices. For Windows 8.0 and above, this process is built into the operating system and the feature that’s used is “WorkPlace Join”. </li>
+</ul>
+<p>I won’t go into the details of setting this up but it’s outlined here in the following articles:</p>
+<p><a href="https://azure.microsoft.com/en-us/documentation/articles/active-directory-azureadjoin-devices-group-policy/" title="https://azure.microsoft.com/en-us/documentation/articles/active-directory-azureadjoin-devices-group-policy/" target="_blank" rel="external">https://azure.microsoft.com/en-us/documentation/articles/active-directory-azureadjoin-devices-group-policy/</a></p>
+<p>Jairo Cadena has the best article that I can find just in case you are interested in how the device registration works:</p>
+<p><a href="https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/" title="https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/" target="_blank" rel="external">https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/</a></p>
+<p>Device registration will work for BOTH customers that are federated (e.g using ADFS) or that’s just doing password synchronization. The caveat is that the computer object needs to be included in the scope of devices that you are syncing using Azure AD Connect or equivalent. <strong>**Update</strong>: Windows 7 Azure AD Registration will ONLY work with ADFS</p>
+<p>Azure AD Connect is involved because there’s an option in the tool for device write-back. Since Azure AD registers mobile or Windows devices that are not part of the domain, there needs to be a mechanism that brings down the devices from Azure to Active Directory so that ADFS knows about these devices.</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48.png" target="_blank" rel="external"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48_thumb.png" alt="2016-08-31_07h11_48" title="2016-08-31_07h11_48"></a></p>
+<p>The command above will do the following:</p>
+<ol>
+<li>Assigns the correct permissions for the Azure AD Connect tool to write back the devices in Azure to AD. In Active Directory, you will notice a “RegisteredDevices” OU in Active Directory. </li>
+</ol>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-7.png" target="_blank" rel="external"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-7.png" alt="image" title="image"></a></p>
+<p>In addition, for domain joined Windows 10 computers the following powershell command needs to be run as well after the Azure Active Directory installation is complete.</p>
+<p><img src="https://markparris.files.wordpress.com/2015/11/nitialize-adsyncdomainjoinedcomputersync.jpg?w=881&amp;h=618" alt="nitialize-ADSyncDomainJoinedComputerSync"></p>
+<p>When you run this script the following happens:</p>
+<ol>
+<li>Create an SCP (Service Connection Point)&nbsp; record in Active Directory that allows Windows devices to know which Azure AD tenant to connect for the device registration to take place. </li>
+</ol>
+<p><u><strong>ADFS Configuration</strong></u></p>
+<p>On the ADFS front, for device registration to work quickly (instantly) you’ll have to configure ADFS so that necessary claims are passed to Azure AD for authentication. You can find more details by following the article I mentioned in the Azure Device Registration section.</p>
+<p>More importantly, you will need to enable device authentication. With ADFS 2012, the setting is configured by checking the box below. Device authentication will help yield the device claims we are looking for.</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-1.png" target="_blank" rel="external"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-1.png" alt="image" title="image"></a></p>
+<p>With ADFS 2016, the configuration is moved to a different area and the process in setting this up is much simpler. Device authentication is also associated with device registration. This removes the need to run powershell commands to initialize device registration with ADFS 2012.</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-2.png" target="_blank" rel="external"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-2.png" alt="image" title="image"></a></p>
+<p><strong><u>Client Testing</u></strong></p>
+<p>So after you get this setup Windows 10 devices that have the anniversary version will automatically register with Azure AD. For older versions of Windows 10, you will need to enable “WorkPlace Join” via group policy.</p>
+<p>Windows 8/8.1 also need to have the “WorkPlace Join” GPO enabled.</p>
+<p>Windows 7 clients do not have the capability natively however you can install this capability using the following tool:</p>
+<p><a href="https://connect.microsoft.com/site1164/program8374" title="https://connect.microsoft.com/site1164/program8374" target="_blank" rel="external">https://connect.microsoft.com/site1164/program8374</a></p>
+<p>For testing purposes, I setup a sample application that displays all claims. The sample application can be found in the Windows Identity Foundation framework and can be downloaded and setup using this article:</p>
+<p><a href="https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/" title="https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/" target="_blank" rel="external">https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/</a></p>
+<p><strong>Caveats: </strong>I spend countless of hours troubleshooting device authentication with Windows 10 and although there’s no article that says this but from testing it does not seem device claims is supported with ADFS 2012. In a ADFS 2016 environment, I was able to get device claims the way I expected.</p>
+<p>Here are the results from a Windows 10 (Anniversary Update) machine logging into the sample claims aware applications:</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-3.png" target="_blank" rel="external"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-3.png" alt="image" title="image"></a></p>
+<p>Now we have information about the device itself such as “IsManaged”, “WorkPlace”, we can use these claims to make authentication decisions.</p>
+<p>In terms of the device registration of the particular client in Azure AD, you will find the following:</p>
+<p>Example of a Windows 10 device that’s domain joined:</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-4.png" target="_blank" rel="external"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-4.png" alt="image" title="image"></a></p>
+<p>Example of Intune joined device:</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image27.png" target="_blank" rel="external"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image27_thumb.png" alt="image" title="image"></a></p>
+<p>Now that we have all this information, we can use ADFS to ensure that domain joined devices and managed devices bypass multi-factor authentication</p>
+<p><strong><u>Making it Work</u></strong></p>
+<p>With ADFS 2016, we can do this with Access Control Policies. This is a simplified way of creating issuance rules without the need for the claims language.</p>
+<p>For my Office 365 tenant, I’m going to create the following Access Control policy and then apply the policy to my Office 365 relying party trust.</p>
+<p>So essentially any user that logs into Office 365 will get a multi-factor authentication prompt except for devices with the claim “Device Trust Level” being “Managed”.&nbsp; In my next post, I’ll deep dive into some of the device claims available and what the different values mean.</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-6.png" target="_blank" rel="external"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-6.png" alt="image" title="image"></a></p>
+<p>Now you can take this a step further and use these device claims to enforce conditional access. For example, you can prevent non-managed devices from accessing company resources either in the cloud or on-premise!</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" rel="next" title="Shared Mailboxes don't automap to Outlook in Exchange Online">
+                <i class="fa fa-chevron-left"></i> Shared Mailboxes don't automap to Outlook in Exchange Online
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/08/adfs-2016-mfa/" rel="prev" title="ADFS 2016: MFA">
+                ADFS 2016: MFA <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Jenu Jose</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yourname@gmail.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://twitter.com/jenu" target="_blank" title="Twitter">
+                    
+                      <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jenu Jose</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/';
+          this.page.identifier = '2016/10/13/adfs-2016-conditional-access-device-claims/';
+          this.page.title = 'ADFS, Device Claims & Conditional Access';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
