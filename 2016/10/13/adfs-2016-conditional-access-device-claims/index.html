@@ -23,7 +23,7 @@ ga('send', 'pageview');
   <meta name="description" content="During a recent EMS POC engagement, my customer asked if there was a way to bypass multi-factor authentication for mobile devices that were registered with Intune/managed by the company. In addition t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ADFS, Device Claims &amp; Conditional Access">
-<meta property="og:url" content="http://yoursite.com/2016/10/13/adfs-2016-conditional-access-device-claims/index.html">
+<meta property="og:url" content="https://blog.jenujose.com/2016/10/13/adfs-2016-conditional-access-device-claims/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="During a recent EMS POC engagement, my customer asked if there was a way to bypass multi-factor authentication for mobile devices that were registered with Intune/managed by the company. In addition t">
 <meta property="og:locale" content="default">
@@ -82,7 +82,7 @@ ga('send', 'pageview');
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.jenujose.com"></form>
       </div>
     </div>
   </div>
@@ -132,12 +132,12 @@ ga('send', 'pageview');
 <p><a href="https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/" title="https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/" target="_blank" rel="noopener">https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/</a></p>
 <p>Device registration will work for BOTH customers that are federated (e.g using ADFS) or that’s just doing password synchronization. The caveat is that the computer object needs to be included in the scope of devices that you are syncing using Azure AD Connect or equivalent. <strong>**Update</strong>: Windows 7 Azure AD Registration will ONLY work with ADFS</p>
 <p>Azure AD Connect is involved because there’s an option in the tool for device write-back. Since Azure AD registers mobile or Windows devices that are not part of the domain, there needs to be a mechanism that brings down the devices from Azure to Active Directory so that ADFS knows about these devices.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48_thumb.png" alt="2016-08-31_07h11_48" title="2016-08-31_07h11_48"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48_thumb.png" alt="2016-08-31_07h11_48" title="2016-08-31_07h11_48"></a></p>
 <p>The command above will do the following:</p>
 <ol>
 <li>Assigns the correct permissions for the Azure AD Connect tool to write back the devices in Azure to AD. In Active Directory, you will notice a “RegisteredDevices” OU in Active Directory. </li>
 </ol>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-7.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-7.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-7.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-7.png" alt="image" title="image"></a></p>
 <p>In addition, for domain joined Windows 10 computers the following powershell command needs to be run as well after the Azure Active Directory installation is complete.</p>
 <p><img src="https://markparris.files.wordpress.com/2015/11/nitialize-adsyncdomainjoinedcomputersync.jpg?w=881&amp;h=618" alt="nitialize-ADSyncDomainJoinedComputerSync"></p>
 <p>When you run this script the following happens:</p>
@@ -147,9 +147,9 @@ ga('send', 'pageview');
 <p><u><strong>ADFS Configuration</strong></u></p>
 <p>On the ADFS front, for device registration to work quickly (instantly) you’ll have to configure ADFS so that necessary claims are passed to Azure AD for authentication. You can find more details by following the article I mentioned in the Azure Device Registration section.</p>
 <p>More importantly, you will need to enable device authentication. With ADFS 2012, the setting is configured by checking the box below. Device authentication will help yield the device claims we are looking for.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-1.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-1.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-1.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-1.png" alt="image" title="image"></a></p>
 <p>With ADFS 2016, the configuration is moved to a different area and the process in setting this up is much simpler. Device authentication is also associated with device registration. This removes the need to run powershell commands to initialize device registration with ADFS 2012.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-2.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-2.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-2.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-2.png" alt="image" title="image"></a></p>
 <p><strong><u>Client Testing</u></strong></p>
 <p>So after you get this setup Windows 10 devices that have the anniversary version will automatically register with Azure AD. For older versions of Windows 10, you will need to enable “WorkPlace Join” via group policy.</p>
 <p>Windows 8/8.1 also need to have the “WorkPlace Join” GPO enabled.</p>
@@ -159,25 +159,25 @@ ga('send', 'pageview');
 <p><a href="https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/" title="https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/" target="_blank" rel="noopener">https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/</a></p>
 <p><strong>Caveats: </strong>I spend countless of hours troubleshooting device authentication with Windows 10 and although there’s no article that says this but from testing it does not seem device claims is supported with ADFS 2012. In a ADFS 2016 environment, I was able to get device claims the way I expected.</p>
 <p>Here are the results from a Windows 10 (Anniversary Update) machine logging into the sample claims aware applications:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-3.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-3.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-3.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-3.png" alt="image" title="image"></a></p>
 <p>Now we have information about the device itself such as “IsManaged”, “WorkPlace”, we can use these claims to make authentication decisions.</p>
 <p>In terms of the device registration of the particular client in Azure AD, you will find the following:</p>
 <p>Example of a Windows 10 device that’s domain joined:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-4.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-4.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-4.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-4.png" alt="image" title="image"></a></p>
 <p>Example of Intune joined device:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image27.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image27_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image27.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image27_thumb.png" alt="image" title="image"></a></p>
 <p>Now that we have all this information, we can use ADFS to ensure that domain joined devices and managed devices bypass multi-factor authentication</p>
 <p><strong><u>Making it Work</u></strong></p>
 <p>With ADFS 2016, we can do this with Access Control Policies. This is a simplified way of creating issuance rules without the need for the claims language.</p>
 <p>For my Office 365 tenant, I’m going to create the following Access Control policy and then apply the policy to my Office 365 relying party trust.</p>
 <p>So essentially any user that logs into Office 365 will get a multi-factor authentication prompt except for devices with the claim “Device Trust Level” being “Managed”.&nbsp; In my next post, I’ll deep dive into some of the device claims available and what the different values mean.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-6.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-6.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-6.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-6.png" alt="image" title="image"></a></p>
 <p>Now you can take this a step further and use these device claims to enforce conditional access. For example, you can prevent non-managed devices from accessing company resources either in the cloud or on-premise!</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="cjugwbgo5000x0kuptt74z8qr" class="article-share-link">Share</a>
+      <a data-url="https://blog.jenujose.com/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="cjugwowo30011zgup69bh6ezo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -224,7 +224,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exchange-Online-Office-365/">Exchange Online, Office 365</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Azure-MFA/">Azure MFA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exchange-Online-Office-365/">Exchange Online, Office 365</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
     </div>
   </div>
 
@@ -234,7 +234,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Exchange-Online-Office-365/" style="font-size: 10px;">Exchange Online, Office 365</a> <a href="/tags/SCCM/" style="font-size: 10px;">SCCM</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a>
+      <a href="/tags/Azure-MFA/" style="font-size: 10px;">Azure MFA</a> <a href="/tags/Exchange-Online-Office-365/" style="font-size: 10px;">Exchange Online, Office 365</a> <a href="/tags/SCCM/" style="font-size: 10px;">SCCM</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a>
     </div>
   </div>
 
@@ -243,7 +243,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
     </div>
   </div>
 
@@ -254,6 +254,10 @@ ga('send', 'pageview');
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication Recommendations</a>
+          </li>
         
           <li>
             <a href="/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/">Shared Mailboxes don&#39;t automap to Outlook in Exchange Online</a>
@@ -271,10 +275,6 @@ ga('send', 'pageview');
             <a href="/2016/09/30/microsoft-intune-per-app-vpn-for-android/">Microsoft Intune Per-App VPN for Android</a>
           </li>
         
-          <li>
-            <a href="/2015/12/01/publishing-owa-with-azure-application-proxy/">Publishing OWA with Azure Application Proxy</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -287,7 +287,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 John Doe<br>
+      &copy; 2019 Jenu Jose<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

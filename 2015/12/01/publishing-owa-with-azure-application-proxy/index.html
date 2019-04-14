@@ -23,7 +23,7 @@ ga('send', 'pageview');
   <meta name="description" content="Azure Application proxy is an exciting technology that’s available with Azure AD Premium. It allows you to publish internal web applications in a simple and secure manner. Software Prerequisites The p">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Publishing OWA with Azure Application Proxy">
-<meta property="og:url" content="http://yoursite.com/2015/12/01/publishing-owa-with-azure-application-proxy/index.html">
+<meta property="og:url" content="https://blog.jenujose.com/2015/12/01/publishing-owa-with-azure-application-proxy/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="Azure Application proxy is an exciting technology that’s available with Azure AD Premium. It allows you to publish internal web applications in a simple and secure manner. Software Prerequisites The p">
 <meta property="og:locale" content="default">
@@ -80,7 +80,7 @@ ga('send', 'pageview');
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.jenujose.com"></form>
       </div>
     </div>
   </div>
@@ -155,26 +155,26 @@ ga('send', 'pageview');
 <p><span style="text-decoration: underline;">Enable Kerberos Authentication for OWA</span></p>
 <p>To do this, logon to the Exchange Management Shell (2010)—&gt;Server Configuration—&gt;Client Access</p>
 <p>Go to the OWA virtual directory and edit the properties. Change the authentication method from forms-based authentication to “Integrated Windows Authentication”</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb.png" alt="image" title="image"></a></p>
 <p>Now we need to delegate the server that has the connector installed with the rights to request a Kerberos ticket on behalf of the Exchange server. To achieve this, go Active Directory Users and Computers, and double click on the computer that has the Azure connector installed.</p>
 <p>Go to the delegation tab and add the services (HTTP) of the Exchange server that can be delegated.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image7.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb7.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image7.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb7.png" alt="image" title="image"></a></p>
 <p><span style="text-decoration: underline;">Configure Azure AD Premium</span></p>
 <p>Create a new application in Azure AD:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image8.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb8.png" alt="image" title="image"></a></p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image9.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb9.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image8.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb8.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image9.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb9.png" alt="image" title="image"></a></p>
 <p><strong>PreAuthentication Method: </strong>Set to Azure Active Directory.</p>
 <p><strong>Translate URL In Headers</strong>: Set to No since Exchange needs host headers to be preserved.</p>
 <p><strong>Internal Authentication Method</strong>: Set to Integrated Windows Authentication (Kerberos). If Kerberos is not possible, the user will have to login to the application.</p>
 <p><strong>Internal Application SPN:</strong> Provide the SPN for the Exchange server.</p>
 <p>&nbsp;</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image4.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb4.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image4.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb4.png" alt="image" title="image"></a></p>
 <p>Now navigating to the Azure Application Proxy URL yields this:</p>
 <p><a href="https://owapage-jenutest.msappproxy.net/OWA/" target="_blank" rel="noopener">https://owapage-jenutest.msappproxy.net/OWA/</a></p>
 <p>Sign into the Azure Portal using your AD credentials (UPN and password).</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image10.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb10.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image10.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb10.png" alt="image" title="image"></a></p>
 <p>Once successfully authenticated, you will be redirected to OWA page and logged in using Kerberos authentication.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image11.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb11.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image11.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb11.png" alt="image" title="image"></a></p>
 <p><span style="text-decoration: underline;">Recommendation:</span></p>
 <p>Azure Application Proxy is a great tool to publish internal web applications securely. In most environments, publishing an application wouldn’t involve making changes to the firewall since the proxy connector only needs outbound access.</p>
 <p>Any application published via Azure Application Proxy can be added to the Application Portal which the users can access from a single page; if they are logged in they would go directly to the OWA page without the need to be authenticated twice. To take this further, multi-factor authentication can be easily leveraged to add another layer of security. To provide a higher level of availability the connector can be installed on multiple machines. In the case one server is down, the application proxy would continue to work.</p>
@@ -182,7 +182,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="cjugwbgnq000i0kupu93el4bb" class="article-share-link">Share</a>
+      <a data-url="https://blog.jenujose.com/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="cjugwowng000kzguptk6b0tcb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -229,7 +229,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exchange-Online-Office-365/">Exchange Online, Office 365</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Azure-MFA/">Azure MFA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exchange-Online-Office-365/">Exchange Online, Office 365</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
     </div>
   </div>
 
@@ -239,7 +239,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Exchange-Online-Office-365/" style="font-size: 10px;">Exchange Online, Office 365</a> <a href="/tags/SCCM/" style="font-size: 10px;">SCCM</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a>
+      <a href="/tags/Azure-MFA/" style="font-size: 10px;">Azure MFA</a> <a href="/tags/Exchange-Online-Office-365/" style="font-size: 10px;">Exchange Online, Office 365</a> <a href="/tags/SCCM/" style="font-size: 10px;">SCCM</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a>
     </div>
   </div>
 
@@ -248,7 +248,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
     </div>
   </div>
 
@@ -259,6 +259,10 @@ ga('send', 'pageview');
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication Recommendations</a>
+          </li>
         
           <li>
             <a href="/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/">Shared Mailboxes don&#39;t automap to Outlook in Exchange Online</a>
@@ -276,10 +280,6 @@ ga('send', 'pageview');
             <a href="/2016/09/30/microsoft-intune-per-app-vpn-for-android/">Microsoft Intune Per-App VPN for Android</a>
           </li>
         
-          <li>
-            <a href="/2015/12/01/publishing-owa-with-azure-application-proxy/">Publishing OWA with Azure Application Proxy</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -292,7 +292,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2019 John Doe<br>
+      &copy; 2019 Jenu Jose<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
