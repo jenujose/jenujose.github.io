@@ -18,19 +18,19 @@ ga('send', 'pageview');
 
 
   
-  <title>Azure Multi-Factor Authentication Recommendations | Hexo</title>
+  <title>Azure Multi-Factor Authentication Tips | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="1) Do not turn on Multi-Factor Authentication from the legacy MFA console on a per-user basis. Use Conditional access to enforce MFA.2) MFA will only work with conditional access if the client applica">
 <meta name="keywords" content="Azure MFA">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Azure Multi-Factor Authentication Recommendations">
+<meta property="og:title" content="Azure Multi-Factor Authentication Tips">
 <meta property="og:url" content="https://blog.jenujose.com/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="1) Do not turn on Multi-Factor Authentication from the legacy MFA console on a per-user basis. Use Conditional access to enforce MFA.2) MFA will only work with conditional access if the client applica">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-14T12:28:48.076Z">
+<meta property="og:updated_time" content="2019-04-14T12:39:21.994Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Azure Multi-Factor Authentication Recommendations">
+<meta name="twitter:title" content="Azure Multi-Factor Authentication Tips">
 <meta name="twitter:description" content="1) Do not turn on Multi-Factor Authentication from the legacy MFA console on a per-user basis. Use Conditional access to enforce MFA.2) MFA will only work with conditional access if the client applica">
 <meta name="twitter:creator" content="@jenu">
   
@@ -93,7 +93,7 @@ ga('send', 'pageview');
         
   
     <h1 class="article-title" itemprop="name">
-      Azure Multi-Factor Authentication Recommendations
+      Azure Multi-Factor Authentication Tips
     </h1>
   
 
@@ -102,11 +102,11 @@ ga('send', 'pageview');
     <div class="article-entry" itemprop="articleBody">
       
         <p>1) Do not turn on Multi-Factor Authentication from the legacy MFA console on a per-user basis. Use Conditional access to enforce MFA.<br>2) MFA will only work with conditional access if the client application supports Modern Authentication (ADAL Library).<br>3) Block legacy authentication after MFA is deployed so that clients that do not support MFA are not allowed to connect to the organization.<br>4) MFA will not be prompted every time use logs in to a service. Azure AD Authentication uses Access Tokens and Refresh tokens to grant access to a service. The access token is valid for an hour while the refresh token can be renewed for up to 90 days.<br>5) Use Sign-Ins log in Azure Active Directory to troubleshoot issues/understand if/how MFA requirement was met.</p>
-
+<div id="disqus_thread"></div>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.jenujose.com/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="cjugwown10009zgupml0luqpo" class="article-share-link">Share</a>
+      <a data-url="https://blog.jenujose.com/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="cjugx01vq000anoupxue6qwz9" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Azure-MFA/">Azure MFA</a></li></ul>
@@ -178,7 +178,7 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication Recommendations</a>
+            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication Tips</a>
           </li>
         
           <li>
@@ -212,6 +212,27 @@ ga('send', 'pageview');
       &copy; 2019 Jenu Jose<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
+    <div id="disqus_thread"></div>
+    <script>
+
+      /**
+      *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+      /*
+      var disqus_config = function () {
+      this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function () { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://blog-jenujose-com.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by
+        Disqus.</a></noscript>
   </div>
 </footer>
     </div>
