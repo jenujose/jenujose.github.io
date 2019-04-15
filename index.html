@@ -18,18 +18,18 @@ ga('send', 'pageview');
 
 
   
-  <title>Hexo</title>
+  <title>A Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="A Blog">
 <meta property="og:url" content="https://jenujose.github.io/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="A Blog">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
+<meta name="twitter:title" content="A Blog">
 <meta name="twitter:creator" content="@jenu">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="A Blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -48,7 +48,7 @@ ga('send', 'pageview');
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo">A Blog</a>
       </h1>
       
     </div>
@@ -90,7 +90,7 @@ ga('send', 'pageview');
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication Tips</a>
+      <a class="article-title" href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication &amp; Conditional Access Poilicy Tips</a>
     </h1>
   
 
@@ -98,12 +98,29 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>1) Do not turn on Multi-Factor Authentication from the legacy MFA console on a per-user basis. Use Conditional access to enforce MFA.<br>2) MFA will only work with conditional access if the client application supports Modern Authentication (ADAL Library).<br>3) Block legacy authentication after MFA is deployed so that clients that do not support MFA are not allowed to connect to the organization.<br>4) MFA will not be prompted every time use logs in to a service. Azure AD Authentication uses Access Tokens and Refresh tokens to grant access to a service. The access token is valid for an hour while the refresh token can be renewed for up to 90 days.<br>5) Use Sign-Ins log in Azure Active Directory to troubleshoot issues/understand if/how MFA requirement was met.</p>
+        <ol>
+<li>Do not turn on Multi-Factor Authentication from the legacy MFA console on a per-user basis. Use Conditional access to enforce MFA.<ul>
+<li>If you have both options turned on, then legacy MFA wins and will enforce the user for MFA every single time and irrespective of the conditions in your conditional access policies.</li>
+<li>Legacy MFA uses App-Passwords which are a terrible user experience for users. This applies to client that don’t support Modern Authentication. They will have to append an app password to their password to login. Instead, consider blocking clients that don’t support MFA.</li>
+</ul>
+</li>
+<li>MFA will only work with conditional access if the client application supports Modern Authentication (ADAL Library).<ul>
+<li>That’s right, conditional access policies will not work if the client doesn’t support modern authentication. You can find out what clients are connecting to your organization using Azure AD sign-in logs.</li>
+</ul>
+</li>
+<li>MFA will not be prompted every time use logs<br>in to a service. Azure AD Authentication uses Access Tokens and Refresh tokens to grant access to a service. The access token is valid for an hour while the refresh token can be renewed for up to 90 days.</li>
+<li>Use Sign-Ins log in Azure Active Directory to troubleshoot issues/understand if/how MFA requirement was met.<ul>
+<li>Admins will bring up the fact that MFA is not prompted for users however by looking at the logs you will notice MFA did apply. However, other device claims satisfied the MFA requirement. In other words, it wasn’t a visible “MFA” prompt that the user experienced, however combination of other trust factors such as device compliance, hybrid-Azure AD joined status helped satisfy the MFA requirements.</li>
+</ul>
+</li>
+<li>“Hybrid Azure AD Joined” and “Device is Compliant” should be used with caution. Domain Joined devices need to be synced and registered with Azure AD before it can understand that it’s a domain joined device. There are some steps that need to be configured before this works. Device is compliant means that it’s an Intune joined device.</li>
+<li>Block legacy authentication after MFA is deployed so that clients that do not support MFA are not allowed to connect to the organization.</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="cjuidfnb10005dgupog7q8xi9" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="cjuifzq6l0000e8upny2esohc" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -150,7 +167,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" data-id="cjuidfnan0000dgupxcf3t12j" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" data-id="cjuifzq780005e8up4kp51wwt" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -208,12 +225,12 @@ ga('send', 'pageview');
 <p><a href="https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/" title="https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/" target="_blank" rel="noopener">https://jairocadena.com/2016/01/18/how-domain-join-is-different-in-windows-10-with-azure-ad/</a></p>
 <p>Device registration will work for BOTH customers that are federated (e.g using ADFS) or that’s just doing password synchronization. The caveat is that the computer object needs to be included in the scope of devices that you are syncing using Azure AD Connect or equivalent. <strong>**Update</strong>: Windows 7 Azure AD Registration will ONLY work with ADFS</p>
 <p>Azure AD Connect is involved because there’s an option in the tool for device write-back. Since Azure AD registers mobile or Windows devices that are not part of the domain, there needs to be a mechanism that brings down the devices from Azure to Active Directory so that ADFS knows about these devices.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48_thumb.png" alt="2016-08-31_07h11_48" title="2016-08-31_07h11_48"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-08-31_07h11_48_thumb.png" alt="2016-08-31_07h11_48" title="2016-08-31_07h11_48"></a></p>
 <p>The command above will do the following:</p>
 <ol>
 <li>Assigns the correct permissions for the Azure AD Connect tool to write back the devices in Azure to AD. In Active Directory, you will notice a “RegisteredDevices” OU in Active Directory. </li>
 </ol>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-7.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-7.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-7.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-7.png" alt="image" title="image"></a></p>
 <p>In addition, for domain joined Windows 10 computers the following powershell command needs to be run as well after the Azure Active Directory installation is complete.</p>
 <p><img src="https://markparris.files.wordpress.com/2015/11/nitialize-adsyncdomainjoinedcomputersync.jpg?w=881&amp;h=618" alt="nitialize-ADSyncDomainJoinedComputerSync"></p>
 <p>When you run this script the following happens:</p>
@@ -223,9 +240,9 @@ ga('send', 'pageview');
 <p><u><strong>ADFS Configuration</strong></u></p>
 <p>On the ADFS front, for device registration to work quickly (instantly) you’ll have to configure ADFS so that necessary claims are passed to Azure AD for authentication. You can find more details by following the article I mentioned in the Azure Device Registration section.</p>
 <p>More importantly, you will need to enable device authentication. With ADFS 2012, the setting is configured by checking the box below. Device authentication will help yield the device claims we are looking for.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-1.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-1.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-1.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-1.png" alt="image" title="image"></a></p>
 <p>With ADFS 2016, the configuration is moved to a different area and the process in setting this up is much simpler. Device authentication is also associated with device registration. This removes the need to run powershell commands to initialize device registration with ADFS 2012.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-2.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-2.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-2.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-2.png" alt="image" title="image"></a></p>
 <p><strong><u>Client Testing</u></strong></p>
 <p>So after you get this setup Windows 10 devices that have the anniversary version will automatically register with Azure AD. For older versions of Windows 10, you will need to enable “WorkPlace Join” via group policy.</p>
 <p>Windows 8/8.1 also need to have the “WorkPlace Join” GPO enabled.</p>
@@ -235,25 +252,25 @@ ga('send', 'pageview');
 <p><a href="https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/" title="https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/" target="_blank" rel="noopener">https://blogs.technet.microsoft.com/tangent_thoughts/2015/02/20/install-and-configure-a-simple-net-4-5-sample-federated-application-samapp/</a></p>
 <p><strong>Caveats: </strong>I spend countless of hours troubleshooting device authentication with Windows 10 and although there’s no article that says this but from testing it does not seem device claims is supported with ADFS 2012. In a ADFS 2016 environment, I was able to get device claims the way I expected.</p>
 <p>Here are the results from a Windows 10 (Anniversary Update) machine logging into the sample claims aware applications:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-3.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-3.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-3.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-3.png" alt="image" title="image"></a></p>
 <p>Now we have information about the device itself such as “IsManaged”, “WorkPlace”, we can use these claims to make authentication decisions.</p>
 <p>In terms of the device registration of the particular client in Azure AD, you will find the following:</p>
 <p>Example of a Windows 10 device that’s domain joined:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-4.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-4.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-4.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-4.png" alt="image" title="image"></a></p>
 <p>Example of Intune joined device:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image27.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image27_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image27.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image27_thumb.png" alt="image" title="image"></a></p>
 <p>Now that we have all this information, we can use ADFS to ensure that domain joined devices and managed devices bypass multi-factor authentication</p>
 <p><strong><u>Making it Work</u></strong></p>
 <p>With ADFS 2016, we can do this with Access Control Policies. This is a simplified way of creating issuance rules without the need for the claims language.</p>
 <p>For my Office 365 tenant, I’m going to create the following Access Control policy and then apply the policy to my Office 365 relying party trust.</p>
 <p>So essentially any user that logs into Office 365 will get a multi-factor authentication prompt except for devices with the claim “Device Trust Level” being “Managed”.&nbsp; In my next post, I’ll deep dive into some of the device claims available and what the different values mean.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-6.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-6.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image-6.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb-6.png" alt="image" title="image"></a></p>
 <p>Now you can take this a step further and use these device claims to enforce conditional access. For example, you can prevent non-managed devices from accessing company resources either in the cloud or on-premise!</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="cjuidfnc80010dguptdjoula0" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="cjuifzq8t0010e8upzbghdqff" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -298,13 +315,13 @@ ga('send', 'pageview');
 <p>FYI:You can easily add ADFS 2016 server into an existing 2012 farm seamlessly but I did not choose to go that route.</p>
 <p><span style="text-decoration: underline"><strong>Configuration</strong></span></p>
 <p>A certificate needs to be generated on the ADFS server which will be used for authentication against Azure AD.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb.png" alt="image" title="image"></a></p>
 <p>After a certificate is generated, a new service principal needs to created and the certificate information associated with the service principal. This allows the ADFS servers to authenticate/communicate with the Azure MFA client successfully.</p>
 <p>When executing the command to create the service principal ID, you are met with an error saying the end date is an invalid parameter. This seems to be a bug and I was able to get around this by omitting the start and end date altogether.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image1.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb1.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image1.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb1.png" alt="image" title="image"></a></p>
 <p>Now that I have MFA service registered with Azure AD, I can go ahead and enable MFA as an authentication method.&nbsp; MFA can be used&nbsp; the primary method of authentication or secondary. Using MFA as a primary method of authentication is great news—this means you don’t have to use your password when logging on to company resources</p>
 <p>For my test environment, I’ve setup ADFS with the following configuration:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-10-08_13h06_13.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-10-08_13h06_13_thumb.png" alt="2016-10-08_13h06_13" title="2016-10-08_13h06_13"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-10-08_13h06_13.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-10-08_13h06_13_thumb.png" alt="2016-10-08_13h06_13" title="2016-10-08_13h06_13"></a></p>
 <p>One of the prerequisites to get Azure MFA to work on-premise is that the “proof-up” or the setup of MFA information needs to happen in Azure AD. This means that multi-factor authentication needs to be enabled for the user. I’ve raised this issue with MS because essentially to use ADFS based Azure MFA you need to turn on Azure AD MFA (more on this later)</p>
 <p>Since we’ve enabled both ADFS based Azure MFA and Azure AD MFA, we need a way to prevent double&nbsp; double MFA prompts (one from Azure and one from ADFS). You will need to change your domain federation settings to the following:</p>
 <p>Set-MsolDomainFederationSettings –DomainName domainname.com -SupportsMFA $false</p>
@@ -316,12 +333,12 @@ ga('send', 'pageview');
 <p>From testing, I was able to use ADFS based MFA for both scenarios and get it to work.&nbsp; It worked because I went through the initial proof-up setup (Turning on MFA in Azure AD or Setting up alternate authentication methods by going to myapps.microsoft.com)</p>
 <p><span style="text-decoration: underline"><strong>User Experience</strong></span></p>
 <p>When a user logs in for the first time to Office 365, they will be met with a prompt to setup MFA (I’ve set the SupportsMFA parameter to false and enabled MFA for the user in Azure AD)</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image41.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image4_thumb.png" alt="image" title="image"></a>.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image71.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image7_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image41.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image4_thumb.png" alt="image" title="image"></a>.</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image71.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image7_thumb.png" alt="image" title="image"></a></p>
 <p>I configured MFA for&nbsp; my test account to use mobile app notifications. Once you click on “Set up” you will receive a QR code which you can scan using the Microsoft Authenticator app (Work Account). Now when I login to Office 365, I’m redirected to my ADFS server and you will notice an option at the bottom for MFA Authentication:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image13.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image13_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image13.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image13_thumb.png" alt="image" title="image"></a></p>
 <p>Once you click on Azure Multi-Factor Authentication, you will have to then use the verification code from the Microsoft Authenticator app to authenticate yourself to Office 365.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image16.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image16_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image16.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image16_thumb.png" alt="image" title="image"></a></p>
 <p><span style="text-decoration: underline"><strong>Recommendations/Thoughts</strong>:</span></p>
 <ol>
 <li>MFA as a primary method of authentication helps prevent the use of passwords thereby reducing the chance that the password gets stolen &amp; it improves the experience of users that are trying to login with mobile devices where there’s not much real estate on the keyboard to type in a complex password.  </li><li>I suspect more documentation on this topic will be published before Windows Server 2016 is available to corporate customers which might explain some of the caveats I’ve run into.  </li><li>The integration of the cloud services such as the MFA service with the Server OS is a great way to unify the setup and configuration process regardless of if you are hybrid or cloud organization.</li>
@@ -330,7 +347,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="cjuidfnb40008dgupb7tb48sy" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="cjuifzq7g000be8upngog36uw" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -377,7 +394,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/" data-id="cjuidfnbl000jdguprcoesa2r" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/" data-id="cjuifzq7m000ee8upduqjyiz6" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -458,26 +475,26 @@ ga('send', 'pageview');
 <p><span style="text-decoration: underline;">Enable Kerberos Authentication for OWA</span></p>
 <p>To do this, logon to the Exchange Management Shell (2010)—&gt;Server Configuration—&gt;Client Access</p>
 <p>Go to the OWA virtual directory and edit the properties. Change the authentication method from forms-based authentication to “Integrated Windows Authentication”</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb.png" alt="image" title="image"></a></p>
 <p>Now we need to delegate the server that has the connector installed with the rights to request a Kerberos ticket on behalf of the Exchange server. To achieve this, go Active Directory Users and Computers, and double click on the computer that has the Azure connector installed.</p>
 <p>Go to the delegation tab and add the services (HTTP) of the Exchange server that can be delegated.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image7.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb7.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image7.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb7.png" alt="image" title="image"></a></p>
 <p><span style="text-decoration: underline;">Configure Azure AD Premium</span></p>
 <p>Create a new application in Azure AD:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image8.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb8.png" alt="image" title="image"></a></p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image9.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb9.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image8.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb8.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image9.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb9.png" alt="image" title="image"></a></p>
 <p><strong>PreAuthentication Method: </strong>Set to Azure Active Directory.</p>
 <p><strong>Translate URL In Headers</strong>: Set to No since Exchange needs host headers to be preserved.</p>
 <p><strong>Internal Authentication Method</strong>: Set to Integrated Windows Authentication (Kerberos). If Kerberos is not possible, the user will have to login to the application.</p>
 <p><strong>Internal Application SPN:</strong> Provide the SPN for the Exchange server.</p>
 <p>&nbsp;</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image4.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb4.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image4.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb4.png" alt="image" title="image"></a></p>
 <p>Now navigating to the Azure Application Proxy URL yields this:</p>
 <p><a href="https://owapage-jenutest.msappproxy.net/OWA/" target="_blank" rel="noopener">https://owapage-jenutest.msappproxy.net/OWA/</a></p>
 <p>Sign into the Azure Portal using your AD credentials (UPN and password).</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image10.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb10.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image10.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb10.png" alt="image" title="image"></a></p>
 <p>Once successfully authenticated, you will be redirected to OWA page and logged in using Kerberos authentication.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image11.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb11.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/12/image11.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/12/image_thumb11.png" alt="image" title="image"></a></p>
 <p><span style="text-decoration: underline;">Recommendation:</span></p>
 <p>Azure Application Proxy is a great tool to publish internal web applications securely. In most environments, publishing an application wouldn’t involve making changes to the firewall since the proxy connector only needs outbound access.</p>
 <p>Any application published via Azure Application Proxy can be added to the Application Portal which the users can access from a single page; if they are logged in they would go directly to the OWA page without the need to be authenticated twice. To take this further, multi-factor authentication can be easily leveraged to add another layer of security. To provide a higher level of availability the connector can be installed on multiple machines. In the case one server is down, the application proxy would continue to work.</p>
@@ -485,7 +502,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="cjuidfnb8000cdgupliilmayw" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="cjuifzq7z000je8updl68yth1" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -524,7 +541,7 @@ ga('send', 'pageview');
     <div class="article-entry" itemprop="articleBody">
       
         <p>As part of a recent task to relocate an SCCM database to faster spindles, I went ahead used the detach/attach method to accomplish this. After the database relocation there were no issues until we tried to create a new application. I received the following error:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/02/image001.png"><img src="http://blog.jenujose.com/wp-content/uploads/2015/02/image001.png" alt="image001"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/02/image001.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/02/image001.png" alt="image001"></a></p>
 <p>&nbsp;</p>
 <p>After checking the logs, I found the following event being reported continuously:</p>
 <p><img src="http://blog.jenujose.com/wp-content/uploads/2015/02/unnamed.png" alt="unnamed"></p>
@@ -535,7 +552,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/" data-id="cjuidfnb60009dgupbmljz213" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/" data-id="cjuifzq7k000ce8upyb86jfl0" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -583,7 +600,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/" data-id="cjuidfnba000edgupaiej8pmv" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/" data-id="cjuifzq7s000he8upkl1vkkzx" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -628,7 +645,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="cjuidfnaw0002dgupwv3z5glq" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="cjuifzq7d0007e8uprv29dbm9" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -694,7 +711,7 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication Tips</a>
+            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication &amp; Conditional Access Poilicy Tips</a>
           </li>
         
           <li>

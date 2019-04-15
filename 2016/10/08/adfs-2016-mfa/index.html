@@ -18,13 +18,13 @@ ga('send', 'pageview');
 
 
   
-  <title>ADFS 2016: MFA | Hexo</title>
+  <title>ADFS 2016: MFA | A Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="ADFS 2016 changes the way Multi-Factor Authentication (MFA) is&amp;nbsp; configured and used. With previous versions of ADFS, MFA Server was downloaded and the ADFS adapter installed to provide MFA for us">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ADFS 2016: MFA">
 <meta property="og:url" content="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:site_name" content="A Blog">
 <meta property="og:description" content="ADFS 2016 changes the way Multi-Factor Authentication (MFA) is&amp;nbsp; configured and used. With previous versions of ADFS, MFA Server was downloaded and the ADFS adapter installed to provide MFA for us">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb.png">
@@ -41,7 +41,7 @@ ga('send', 'pageview');
 <meta name="twitter:image" content="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb.png">
 <meta name="twitter:creator" content="@jenu">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="A Blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -60,7 +60,7 @@ ga('send', 'pageview');
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
+        <a href="/" id="logo">A Blog</a>
       </h1>
       
     </div>
@@ -119,13 +119,13 @@ ga('send', 'pageview');
 <p>FYI:You can easily add ADFS 2016 server into an existing 2012 farm seamlessly but I did not choose to go that route.</p>
 <p><span style="text-decoration: underline"><strong>Configuration</strong></span></p>
 <p>A certificate needs to be generated on the ADFS server which will be used for authentication against Azure AD.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb.png" alt="image" title="image"></a></p>
 <p>After a certificate is generated, a new service principal needs to created and the certificate information associated with the service principal. This allows the ADFS servers to authenticate/communicate with the Azure MFA client successfully.</p>
 <p>When executing the command to create the service principal ID, you are met with an error saying the end date is an invalid parameter. This seems to be a bug and I was able to get around this by omitting the start and end date altogether.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image1.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb1.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image1.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image_thumb1.png" alt="image" title="image"></a></p>
 <p>Now that I have MFA service registered with Azure AD, I can go ahead and enable MFA as an authentication method.&nbsp; MFA can be used&nbsp; the primary method of authentication or secondary. Using MFA as a primary method of authentication is great news—this means you don’t have to use your password when logging on to company resources</p>
 <p>For my test environment, I’ve setup ADFS with the following configuration:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-10-08_13h06_13.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-10-08_13h06_13_thumb.png" alt="2016-10-08_13h06_13" title="2016-10-08_13h06_13"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-10-08_13h06_13.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/2016-10-08_13h06_13_thumb.png" alt="2016-10-08_13h06_13" title="2016-10-08_13h06_13"></a></p>
 <p>One of the prerequisites to get Azure MFA to work on-premise is that the “proof-up” or the setup of MFA information needs to happen in Azure AD. This means that multi-factor authentication needs to be enabled for the user. I’ve raised this issue with MS because essentially to use ADFS based Azure MFA you need to turn on Azure AD MFA (more on this later)</p>
 <p>Since we’ve enabled both ADFS based Azure MFA and Azure AD MFA, we need a way to prevent double&nbsp; double MFA prompts (one from Azure and one from ADFS). You will need to change your domain federation settings to the following:</p>
 <p>Set-MsolDomainFederationSettings –DomainName domainname.com -SupportsMFA $false</p>
@@ -137,12 +137,12 @@ ga('send', 'pageview');
 <p>From testing, I was able to use ADFS based MFA for both scenarios and get it to work.&nbsp; It worked because I went through the initial proof-up setup (Turning on MFA in Azure AD or Setting up alternate authentication methods by going to myapps.microsoft.com)</p>
 <p><span style="text-decoration: underline"><strong>User Experience</strong></span></p>
 <p>When a user logs in for the first time to Office 365, they will be met with a prompt to setup MFA (I’ve set the SupportsMFA parameter to false and enabled MFA for the user in Azure AD)</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image41.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image4_thumb.png" alt="image" title="image"></a>.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image71.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image7_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image41.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image4_thumb.png" alt="image" title="image"></a>.</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image71.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image7_thumb.png" alt="image" title="image"></a></p>
 <p>I configured MFA for&nbsp; my test account to use mobile app notifications. Once you click on “Set up” you will receive a QR code which you can scan using the Microsoft Authenticator app (Work Account). Now when I login to Office 365, I’m redirected to my ADFS server and you will notice an option at the bottom for MFA Authentication:</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image13.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image13_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image13.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image13_thumb.png" alt="image" title="image"></a></p>
 <p>Once you click on Azure Multi-Factor Authentication, you will have to then use the verification code from the Microsoft Authenticator app to authenticate yourself to Office 365.</p>
-<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image16.png"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image16_thumb.png" alt="image" title="image"></a></p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2016/10/image16.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2016/10/image16_thumb.png" alt="image" title="image"></a></p>
 <p><span style="text-decoration: underline"><strong>Recommendations/Thoughts</strong>:</span></p>
 <ol>
 <li>MFA as a primary method of authentication helps prevent the use of passwords thereby reducing the chance that the password gets stolen &amp; it improves the experience of users that are trying to login with mobile devices where there’s not much real estate on the keyboard to type in a complex password.  </li><li>I suspect more documentation on this topic will be published before Windows Server 2016 is available to corporate customers which might explain some of the caveats I’ve run into.  </li><li>The integration of the cloud services such as the MFA service with the Server OS is a great way to unify the setup and configuration process regardless of if you are hybrid or cloud organization.</li>
@@ -151,7 +151,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="cjuidfnb40008dgupb7tb48sy" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="cjuifzq7g000be8upngog36uw" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -238,7 +238,7 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication Tips</a>
+            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication &amp; Conditional Access Poilicy Tips</a>
           </li>
         
           <li>
