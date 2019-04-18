@@ -90,7 +90,7 @@ ga('send', 'pageview');
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication &amp; Conditional Access Poilicy Tips</a>
+      <a class="article-title" href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication &amp; Conditional Access Policy Tips</a>
     </h1>
   
 
@@ -108,7 +108,7 @@ ga('send', 'pageview');
 <li>That’s right, conditional access policies will not work if the client doesn’t support modern authentication. You can find out what clients are connecting to your organization using Azure AD sign-in logs.</li>
 </ul>
 </li>
-<li>MFA will not be prompted every time use logs<br>in to a service. Azure AD Authentication uses Access Tokens and Refresh tokens to grant access to a service. The access token is valid for an hour while the refresh token can be renewed for up to 90 days.</li>
+<li>MFA will not be prompted every time use logs in to a service. Azure AD Authentication uses Access Tokens and Refresh tokens to grant access to a service. The access token is valid for an hour at which point the refresh token is used to request another access token. This cycle can continue up to 90 days. Keep in mind conditional access policies are evaluated everytime the service gives you a new access token.</li>
 <li>Use Sign-Ins log in Azure Active Directory to troubleshoot issues/understand if/how MFA requirement was met.<ul>
 <li>Admins will bring up the fact that MFA is not prompted for users however by looking at the logs you will notice MFA did apply. However, other device claims satisfied the MFA requirement. In other words, it wasn’t a visible “MFA” prompt that the user experienced, however combination of other trust factors such as device compliance, hybrid-Azure AD joined status helped satisfy the MFA requirements.</li>
 </ul>
@@ -120,7 +120,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="cjuigb69l0007zwup3nbmwhek" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="cjummz6ar0000jwup4xhhk5im" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -167,7 +167,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" data-id="cjuigb69e0005zwup6pdoslz1" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" data-id="cjummz6az0002jwupttshtf1c" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -270,7 +270,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="cjuigb6bk0010zwup043y9zu7" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="cjummz6c20013jwupp3obuw7k" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -347,7 +347,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="cjuigb69w000azwupfineine1" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="cjummz6b80007jwupdgywr7hp" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -394,7 +394,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/" data-id="cjuigb6ai000hzwuppx0zlbts" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/" data-id="cjummz6bl000ijwuphqx2s17r" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -502,7 +502,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="cjuigb6ao000kzwup4vpsjz3d" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="cjummz6bi000gjwup4z9l2nzb" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -552,7 +552,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/" data-id="cjuigb6a2000czwupp4tt2p05" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/" data-id="cjummz6bc000cjwupv9lwrhr5" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -600,7 +600,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/" data-id="cjuigb6ab000gzwupskjihrjx" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/" data-id="cjummz6ba0009jwupnw12obfe" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -645,7 +645,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="cjuigb69r0009zwupk8sawrgm" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="cjummz6b50005jwup3yap56fi" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -711,7 +711,7 @@ ga('send', 'pageview');
       <ul>
         
           <li>
-            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication &amp; Conditional Access Poilicy Tips</a>
+            <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication &amp; Conditional Access Policy Tips</a>
           </li>
         
           <li>
