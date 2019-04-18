@@ -28,7 +28,7 @@ ga('send', 'pageview');
 <meta property="og:site_name" content="Cloud &amp; Security Blog">
 <meta property="og:description" content="Do not turn on Multi-Factor Authentication from the legacy MFA console on a per-user basis. Use Conditional access to enforce MFA. If you have both options turned on, then legacy MFA wins and will en">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-18T12:43:48.401Z">
+<meta property="og:updated_time" content="2019-04-18T12:52:24.994Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Azure Multi-Factor Authentication &amp; Conditional Access Policy Tips">
 <meta name="twitter:description" content="Do not turn on Multi-Factor Authentication from the legacy MFA console on a per-user basis. Use Conditional access to enforce MFA. If you have both options turned on, then legacy MFA wins and will en">
@@ -111,19 +111,21 @@ ga('send', 'pageview');
 <li>That’s right, conditional access policies will not work if the client doesn’t support modern authentication. You can find out what clients are connecting to your organization using Azure AD sign-in logs.</li>
 </ul>
 </li>
-<li>MFA will not be prompted every time use logs in to a service. Azure AD Authentication uses Access Tokens and Refresh tokens to grant access to a service. The access token is valid for an hour at which point the refresh token is used to request another access token. This cycle can continue up to 90 days. Keep in mind conditional access policies are evaluated everytime the service gives you a new access token.</li>
+<li>MFA will not be prompted every time use logs in to a service. Azure AD Authentication uses Access Tokens and Refresh tokens to grant access to a service. The access token is valid for an hour at which point the refresh token is used to request another access token. This cycle can continue up to 90 days. Keep in mind conditional access policies are evaluated everytime the service gives you a new access token. These default settings for token lifetimes are <a href="https://techcommunity.microsoft.com/t5/Azure-Active-Directory-Identity/Changes-to-the-Token-Lifetime-Defaults-in-Azure-AD/ba-p/245304" target="_blank" rel="noopener">Microsoft’s</a>  recommendation as they have found no correlation between longer refresh token lifetime and account compromise.</li>
 <li>Use Sign-Ins log in Azure Active Directory to troubleshoot issues/understand if/how MFA requirement was met.<ul>
 <li>Admins will bring up the fact that MFA is not prompted for users however by looking at the logs you will notice MFA did apply. However, other device claims satisfied the MFA requirement. In other words, it wasn’t a visible “MFA” prompt that the user experienced, however combination of other trust factors such as device compliance, hybrid-Azure AD joined status helped satisfy the MFA requirements.</li>
 </ul>
 </li>
-<li>“Hybrid Azure AD Joined” and “Device is Compliant” should be used with caution. Domain Joined devices need to be synced and registered with Azure AD before it can understand that it’s a domain joined device. There are some steps that need to be configured before this works. Device is compliant means that it’s an Intune joined device.</li>
+<li>“Hybrid Azure AD Joined” and “Device is Compliant” should be used with caution. Domain Joined devices need to be synced and registered with Azure AD before it can understand that it’s a domain joined device. There are some <a href="https://docs.microsoft.com/en-us/azure/active-directory/devices/hybrid-azuread-join-plan" target="_blank" rel="noopener">steps</a> that need to be configured before this works. Device is compliant means that it’s an Intune joined device meeting compliance policies.</li>
 <li>Block legacy authentication after MFA is deployed so that clients that do not support MFA are not allowed to connect to the organization.</li>
+<li>Create [Breakglass] (<a href="https://docs.microsoft.com/en-us/azure/active-directory/users-groups-roles/directory-emergency-access" target="_blank" rel="noopener">https://docs.microsoft.com/en-us/azure/active-directory/users-groups-roles/directory-emergency-access</a>) accounts just in case you lock yourself out or Microsoft’s MFA service goes down. These accounts should be exempt from MFA and other conditional access policies.</li>
 </ol>
+<p>1</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="cjummz6ar0000jwup4xhhk5im" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="cjumn5e4v0001xcup4aprwfvi" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/#disqus_thread" class="article-comment-link">Comments</a>
       
