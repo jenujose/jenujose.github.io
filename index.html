@@ -76,6 +76,58 @@ ga('send', 'pageview');
       <div class="outer">
         <section id="main">
   
+    <article id="post-Exploring-Microsoft-Tunnel" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/09/Exploring-Microsoft-Tunnel/" class="article-date">
+  <time datetime="2020-11-09T12:23:19.000Z" itemprop="datePublished">2020-11-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/09/Exploring-Microsoft-Tunnel/">Exploring Microsoft Tunnel (Part 1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Microsoft Tunnel is a VPN solution provided by Microsoft that provides connectivity back to the datacenter or on-premises network from mobile devices. All of these features are deployed via Microsoft Intune (MDM). </p>
+<p>VPN profiles can be configured in Intune which enables Always-On or per-app VPN connectivity with your firewall of choice. Microsoft Tunnel however makes it easier to configure and deploy as it does not depend on major changes to a companys networking/firewall/vpn solution. Customers moving from away from MobileIron and AirWatch have asked for this type of solution where they can open their mobile app and establish connectivity back home. </p>
+<p>The Microsoft solution is implemented on a Linux machine utilizing container technology. Looking under the covers, Microsoft is leveraging OpenVPN technology for the implementation. The approach is a bit confusing since Microsoft also has Always-On-VPN option using Windows Server which it touts as the modern way to use VPN and is compatible with conditional access policies.</p>
+<p>As part of this blog post, I’ll explore the installation, configuration and troubleshooting steps. The problem that I’m trying to solve is to have my phone automatically connect to VPN when accessing my video camera application. This way, I don’t have to manually connect to VPN and access my cameras when I am outside of my home network.</p>
+<p>To get started, run the install using the MS provided script. The only prequisite that I had to install was the following:<br>Install Docker CE</p>
+<p>Since I didn’t want to pay for any certificates, I decided to use my internal Windows Certificate Authority.</p>
+<p>On the Intune side, you willl have to create a server, site &amp; server configuration. This will be covered in a future blog post.</p>
+<h2 id="Create-the-CSR-on-the-Server"><a href="#Create-the-CSR-on-the-Server" class="headerlink" title="Create the CSR on the Server"></a>Create the CSR on the Server</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">openssl req -new -sha256 -nodes -days 1095 -out \site.csr -newkey rsa:2048 -keyout \site.key -config &lt;(</span><br><span class="line"></span><br><span class="line">cat &lt;&lt;-EOF</span><br><span class="line">[req]</span><br><span class="line">default_bits = 2048</span><br><span class="line">prompt = no</span><br><span class="line">default_md = sha256</span><br><span class="line">req_extensions = req_ext</span><br><span class="line">distinguished_name = dn</span><br><span class="line">[ dn ]</span><br><span class="line">C=US</span><br><span class="line">L=Texas</span><br><span class="line">CN = mstunnel.jenujose.com</span><br><span class="line">[ req_ext ]</span><br><span class="line">subjectAltName = @alt_names</span><br><span class="line">[ alt_names ]</span><br><span class="line">IP.1 = 99.76.16.241</span><br><span class="line">EOF</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="Generate-a-Certificate-from-the-issuing-CA"><a href="#Generate-a-Certificate-from-the-issuing-CA" class="headerlink" title="Generate a Certificate from the issuing CA"></a>Generate a Certificate from the issuing CA</h2><p>This was a tricky one and had to do a bit of googling to remember the commands to issue a certiicate via certutil.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">certutil -submit -attrib &quot;CertificateTemplate:SSLWebServer&quot;</span><br><span class="line"></span><br><span class="line">**Note that the name of the certificate template needs to be typed in without any spaces. Client AUthentication key is what you will need for this to work.</span><br></pre></td></tr></table></figure></p>
+<h2 id="Import-the-Cert-into-Linux-box-alongside-bundle-of-certs"><a href="#Import-the-Cert-into-Linux-box-alongside-bundle-of-certs" class="headerlink" title="Import the Cert into Linux box alongside bundle of certs"></a>Import the Cert into Linux box alongside bundle of certs</h2><p>Since I have a two tier certificate authority, I had to bundle up the certificates into a CER file first.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cat rootcab.cer intermediatecab.cer &gt; bundle1.cer</span><br><span class="line"></span><br><span class="line">sudo openssl pkcs12 -export -out site.pfx -inkey site.key -in site.cer -certfile bundle1.cer</span><br><span class="line"></span><br><span class="line">-out switch is the certificate bundle supported by MSTunnel.</span><br><span class="line">-inkey switch is the private key that was generated when the  CSR was generatd</span><br><span class="line">-in key.cer - Certificate</span><br><span class="line">-certfile - Root &amp; Intermediate CA</span><br></pre></td></tr></table></figure></p>
+<h2 id="Run-the-tunnel-setup"><a href="#Run-the-tunnel-setup" class="headerlink" title="Run the tunnel setup"></a>Run the tunnel setup</h2><p>Before the setup can be run, the PFX file needs to be copied to MStunnel directory<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp site.pfx /etc/mstunnel/private/site.pfx</span><br><span class="line">sudo ./mstunnel-setup</span><br></pre></td></tr></table></figure></p>
+<p>In the next part of the blog post, I will go over the setup on the Intune side to be able to deploy the solution to mobile devices.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jenujose.github.io/2020/11/09/Exploring-Microsoft-Tunnel/" data-id="ckiv5x9hg0004bcupsoc8z7m9" class="article-share-link">Share</a>
+      
+        <a href="https://jenujose.github.io/2020/11/09/Exploring-Microsoft-Tunnel/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Intune-MEMCM-VPN-Mobility/">Intune, MEMCM, VPN, Mobility</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Reporting-Read-Only-Conditional-Access-Rule" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/20/Reporting-Read-Only-Conditional-Access-Rule/" class="article-date">
@@ -98,11 +150,14 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>#Heading 1<br>There’s not a really good way to report on results of a read-only conditional access rule.  As of writing this post, you have to look at the result of the rule by digging into each user which can be tedious.</p>
+<p>There is a better way to report and it’s through Log Analytics via Kusto Query Language (KQL).</p>
+<p>First, you will need to send your Azure AD data to Log Analytics. This requires setting up Azure AD Insights and</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2020/06/20/Reporting-Read-Only-Conditional-Access-Rule/" data-id="ckbnokkok0000twupotz2kcud" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2020/06/20/Reporting-Read-Only-Conditional-Access-Rule/" data-id="ckiv5x9hj0007bcup4zwt8wle" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2020/06/20/Reporting-Read-Only-Conditional-Access-Rule/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -159,7 +214,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="ckbnokkoq0002twupvmokefe4" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="ckiv5x9he0003bcupvem837ql" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -206,7 +261,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" data-id="ckbnokkp10009twupqfyko27x" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" data-id="ckiv5x9hh0006bcupt19x4cop" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -309,7 +364,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="ckbnokkp3000btwup4hh08d9a" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="ckiv5x9hp000gbcupea2gnb3u" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -386,7 +441,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="ckbnokkpc000itwup8rg0mhyh" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="ckiv5x9hm000cbcupqeqkvf5e" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -433,7 +488,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/" data-id="ckbnokkpf000otwupovzsa97x" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/" data-id="ckiv5x9ih0011bcupus8bait7" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -541,7 +596,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="ckbnokkpe000ltwupcrqrpzaf" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="ckiv5x9il0013bcupxrue2b7x" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -591,7 +646,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/" data-id="ckbnokkoy0006twupwaq8nskv" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/" data-id="ckiv5x9ho000ebcupw0994qot" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -639,7 +694,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/" data-id="ckbnokkpa000ftwup96ekp84d" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/" data-id="ckiv5x9id000zbcupbus86cye" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -651,54 +706,12 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-a-read-operation-on-a-large-object-failed" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/01/02/a-read-operation-on-a-large-object-failed/" class="article-date">
-  <time datetime="2015-01-03T02:00:47.000Z" itemprop="datePublished">2015-01-02</time>
-</a>
+
+
+  <nav id="page-nav">
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/SCCM/">SCCM</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/02/a-read-operation-on-a-large-object-failed/">A read operation on a large object failed..</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>After logging into my SCCM 2012 R2 server and running a report, I was getting an error to check network connectivity to the Report Server. After logging into my SQL 2012 SP2 server, I saw the following error message every time I ran a report:</p>
-<p>_Log Name: Application<br>Source: MSSQLSERVER<br>Date: 12/5/2014 10:32:42 PM<br>Event ID: 7886<br>Task Category: Server<br>Level: Error<br>Keywords: Classic<br>_<br><strong>Description</strong>:<br>_A read operation on a large object failed while sending data to the client. A common cause for this is if the application is running in READ UNCOMMITTED isolation level. This connection will be terminated.<br>_<br>I checked the database size and initially thought the autogrowth threshold was low. I was still getting the error after adjusting the autogrowth so I then thought it might be an issue with the database itself and ran a DB check.</p>
-<p><pre class="lang:default decode:true" title="DBCheck SQL">ALTER DATABASE ReportServerDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;<br>BEGIN TRANSACTION;<br>DBCC CHECKDB (‘ReportServerDB’, REPAIR_ALLOW_DATA_LOSS);<br>ALTER DATABASE ReportServerDB SET MULTI_USER;</pre><br>I had to run these commands couple of times to fix the corruption in the database.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="ckbnokkp5000etwupalrmh8t3" class="article-share-link">Share</a>
-      
-        <a href="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+  </nav>
 
 </section>
         
@@ -718,7 +731,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Azure-MFA/">Azure MFA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exchange-Online-Office-365/">Exchange Online, Office 365</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Azure-MFA/">Azure MFA</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exchange-Online-Office-365/">Exchange Online, Office 365</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Intune-MEMCM-VPN-Mobility/">Intune, MEMCM, VPN, Mobility</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
     </div>
   </div>
 
@@ -728,7 +741,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Azure-MFA/" style="font-size: 10px;">Azure MFA</a> <a href="/tags/Exchange-Online-Office-365/" style="font-size: 10px;">Exchange Online, Office 365</a> <a href="/tags/SCCM/" style="font-size: 10px;">SCCM</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a>
+      <a href="/tags/Azure-MFA/" style="font-size: 10px;">Azure MFA</a> <a href="/tags/Exchange-Online-Office-365/" style="font-size: 10px;">Exchange Online, Office 365</a> <a href="/tags/Intune-MEMCM-VPN-Mobility/" style="font-size: 10px;">Intune, MEMCM, VPN, Mobility</a> <a href="/tags/SCCM/" style="font-size: 10px;">SCCM</a> <a href="/tags/SQL/" style="font-size: 10px;">SQL</a>
     </div>
   </div>
 
@@ -737,7 +750,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
     </div>
   </div>
 
@@ -748,6 +761,10 @@ ga('send', 'pageview');
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/11/09/Exploring-Microsoft-Tunnel/">Exploring Microsoft Tunnel (Part 1)</a>
+          </li>
         
           <li>
             <a href="/2020/06/20/Reporting-Read-Only-Conditional-Access-Rule/">Reporting Read-Only Conditional Access Rule</a>
@@ -763,10 +780,6 @@ ga('send', 'pageview');
         
           <li>
             <a href="/2016/10/13/adfs-2016-conditional-access-device-claims/">ADFS, Device Claims &amp; Conditional Access</a>
-          </li>
-        
-          <li>
-            <a href="/2016/10/08/adfs-2016-mfa/">ADFS 2016: MFA</a>
           </li>
         
       </ul>

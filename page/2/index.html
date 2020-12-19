@@ -18,11 +18,11 @@ ga('send', 'pageview');
 
 
   
-  <title>Archives: 2017 | Cloud &amp; Security Blog</title>
+  <title>Cloud &amp; Security Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="Cloud &amp; Security Blog">
-<meta property="og:url" content="https://jenujose.github.io/archives/2017/index.html">
+<meta property="og:url" content="https://jenujose.github.io/page/2/index.html">
 <meta property="og:site_name" content="Cloud &amp; Security Blog">
 <meta property="og:locale" content="default">
 <meta name="twitter:card" content="summary">
@@ -76,38 +76,59 @@ ga('send', 'pageview');
       <div class="outer">
         <section id="main">
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" class="archive-article-date">
-  <time datetime="2017-12-22T14:28:35.000Z" itemprop="datePublished">Dec 22</time>
+    <article id="post-a-read-operation-on-a-large-object-failed" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/02/a-read-operation-on-a-large-object-failed/" class="article-date">
+  <time datetime="2015-01-03T02:00:47.000Z" itemprop="datePublished">2015-01-02</time>
 </a>
-      
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SCCM/">SCCM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
     <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/">Shared Mailboxes don&#39;t automap to Outlook in Exchange Online</a>
+      <a class="article-title" href="/2015/01/02/a-read-operation-on-a-large-object-failed/">A read operation on a large object failed..</a>
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>After logging into my SCCM 2012 R2 server and running a report, I was getting an error to check network connectivity to the Report Server. After logging into my SQL 2012 SP2 server, I saw the following error message every time I ran a report:</p>
+<p>_Log Name: Application<br>Source: MSSQLSERVER<br>Date: 12/5/2014 10:32:42 PM<br>Event ID: 7886<br>Task Category: Server<br>Level: Error<br>Keywords: Classic<br>_<br><strong>Description</strong>:<br>_A read operation on a large object failed while sending data to the client. A common cause for this is if the application is running in READ UNCOMMITTED isolation level. This connection will be terminated.<br>_<br>I checked the database size and initially thought the autogrowth threshold was low. I was still getting the error after adjusting the autogrowth so I then thought it might be an issue with the database itself and ran a DB check.</p>
+<p><pre class="lang:default decode:true" title="DBCheck SQL">ALTER DATABASE ReportServerDB SET SINGLE_USER WITH ROLLBACK IMMEDIATE;<br>BEGIN TRANSACTION;<br>DBCC CHECKDB (‘ReportServerDB’, REPAIR_ALLOW_DATA_LOSS);<br>ALTER DATABASE ReportServerDB SET MULTI_USER;</pre><br>I had to run these commands couple of times to fix the corruption in the database.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="ckiv5x9hk0008bcupllp3u5ho" class="article-share-link">Share</a>
+      
+        <a href="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SCCM/">SCCM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
+
+    </footer>
   </div>
+  
 </article>
-  
-  
-    </div></section>
+
+
   
 
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
 
 </section>
         
