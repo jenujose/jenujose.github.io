@@ -28,7 +28,7 @@ ga('send', 'pageview');
 <meta property="og:site_name" content="Cloud &amp; Security Blog">
 <meta property="og:description" content="Microsoft Tunnel is a VPN solution provided by Microsoft that provides connectivity back to the datacenter or on-premises network from mobile devices. All of these features are deployed via Microsoft">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2020-12-19T03:45:15.307Z">
+<meta property="og:updated_time" content="2020-12-23T17:40:10.875Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Exploring Microsoft Tunnel (Part 1)">
 <meta name="twitter:description" content="Microsoft Tunnel is a VPN solution provided by Microsoft that provides connectivity back to the datacenter or on-premises network from mobile devices. All of these features are deployed via Microsoft">
@@ -102,7 +102,7 @@ ga('send', 'pageview');
     <div class="article-entry" itemprop="articleBody">
       
         <p>Microsoft Tunnel is a VPN solution provided by Microsoft that provides connectivity back to the datacenter or on-premises network from mobile devices. All of these features are deployed via Microsoft Intune (MDM). </p>
-<p>VPN profiles can be configured in Intune which enables Always-On or per-app VPN connectivity with your firewall of choice. Microsoft Tunnel however makes it easier to configure and deploy as it does not depend on major changes to a companys networking/firewall/vpn solution. Customers moving from away from MobileIron and AirWatch have asked for this type of solution where they can open their mobile app and establish connectivity back home. </p>
+<p>This feature has always existed with Intune. VPN profiles can be configured in Intune which enables Always-On or per-app VPN connectivity with your firewall of choice. Microsoft Tunnel however makes it easier to configure and deploy a VPN solution as it does not depend on major changes to a companys networking/firewall/vpn solution. Customers moving from away from MobileIron and AirWatch have asked for this type of solution where they can open their mobile app and establish connectivity back home but  it’s always been a challenge to get it working with enterprise network appliances.</p>
 <p>The Microsoft solution is implemented on a Linux machine utilizing container technology. Looking under the covers, Microsoft is leveraging OpenVPN technology for the implementation. The approach is a bit confusing since Microsoft also has Always-On-VPN option using Windows Server which it touts as the modern way to use VPN and is compatible with conditional access policies.</p>
 <p>As part of this blog post, I’ll explore the installation, configuration and troubleshooting steps. The problem that I’m trying to solve is to have my phone automatically connect to VPN when accessing my video camera application. This way, I don’t have to manually connect to VPN and access my cameras when I am outside of my home network.</p>
 <p>To get started, run the install using the MS provided script. The only prequisite that I had to install was the following:<br>Install Docker CE</p>
@@ -117,7 +117,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2020/11/09/Exploring-Microsoft-Tunnel/" data-id="ckj1p5r4o000desupi4ozjiu3" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2020/11/09/Exploring-Microsoft-Tunnel/" data-id="ckj1pd5890007foupy87lwc29" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2020/11/09/Exploring-Microsoft-Tunnel/#disqus_thread" class="article-comment-link">Comments</a>
       
