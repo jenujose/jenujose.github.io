@@ -117,17 +117,16 @@ ga('send', 'pageview');
 <p><code>Server Configuration  - Is where you go to download the installer script. Once the script is run, this section will highlight the servers that are configured.</code> </p>
 <p>The file is a bash script that runs a function to configure the server.</p>
 <h2 id="Run-the-tunnel-setup"><a href="#Run-the-tunnel-setup" class="headerlink" title="Run the tunnel setup"></a>Run the tunnel setup</h2><p>Before the setup can be run, the PFX file needs to be copied to MStunnel directory<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://aka.ms/microsofttunneldownload -O mstunnel-setup</span><br><span class="line">sudo ./mstunnel-setup</span><br></pre></td></tr></table></figure></p>
-<p>In the last part of this blog, we will go over the solution end to end.</p>
 <h2 id="Intune-Client-Configuration"><a href="#Intune-Client-Configuration" class="headerlink" title="Intune Client Configuration"></a>Intune Client Configuration</h2><p>Also on the Intune side, two configuration profiles were created to deploy the root and trusted CA certs to the mobile device.</p>
 <p>A VPN profile was deployed as well with the Microsoft tunnel. The connection type was set to Microsoft Tunnel.<br><img src="./images/2021/../../../images/2021/January/2021-01-18_14h03_01.png" alt="VPN Configuration"></p>
 <p>Lastly, the per-app VPN needs to be associated at the app deployment level. In my case, the app I wanted the on-demand VPN for was configured to use my MSTunnel configuration policy.</p>
 <p><img src="./images/2021/../../../images/2021/January/2021-01-18_14h07_29.png" alt="App Configuration"></p>
-<p>The Microsoft Tunnel App also needs to be deployed to the clients as well. This app is used to connect to the VPN and also to enforce conditional acccess rules (2FA for example)</p>
+<p>The Microsoft Tunnel App also needs to be deployed to the clients as well. This app is used to connect to the VPN and also to enforce conditional acccess rules (2FA for example). In the next and last part of this blog, we will go over the solution end to end.</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2021/01/18/Exploring-Microsoft-Tunnel-Part-2/" data-id="ckk6b3qm70004ewup901fv7kq" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2021/01/18/Exploring-Microsoft-Tunnel-Part-2/" data-id="ckk6b5paz0008ngup9u5k3cfp" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2021/01/18/Exploring-Microsoft-Tunnel-Part-2/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -156,7 +155,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2021/01/13/#Troubleshooting/" data-id="ckk6b3qm10002ewupv7jyj0x0" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2021/01/13/#Troubleshooting/" data-id="ckk6b5pat0004ngup9q1a90rc" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2021/01/13/#Troubleshooting/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -206,7 +205,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2020/11/09/Exploring-Microsoft-Tunnel/" data-id="ckk6b3qmb0006ewupf07feb3h" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2020/11/09/Exploring-Microsoft-Tunnel/" data-id="ckk6b5pav0005ngupt2ju0yud" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2020/11/09/Exploring-Microsoft-Tunnel/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -250,7 +249,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2020/06/20/Reporting-Read-Only-Conditional-Access-Rule/" data-id="ckk6b3qmg0009ewupljh1gm0m" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2020/06/20/Reporting-Read-Only-Conditional-Access-Rule/" data-id="ckk6b5pb00009ngupfk66hhb0" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2020/06/20/Reporting-Read-Only-Conditional-Access-Rule/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -307,7 +306,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="ckk6b3qme0007ewup17ybpoz7" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/" data-id="ckk6b5pax0006ngupxg4hc3gc" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -354,7 +353,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" data-id="ckk6b3qml000bewup51r7arvt" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/" data-id="ckk6b5pb2000bngupsh3cx2p1" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -457,7 +456,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="ckk6b3qmr000gewupknh72wo3" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/" data-id="ckk6b5pb7000ingup45d30eir" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/13/adfs-2016-conditional-access-device-claims/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -534,7 +533,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="ckk6b3qmt000hewupfx8bqsam" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/" data-id="ckk6b5pb8000kngupcdvay9x3" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/10/08/adfs-2016-mfa/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -581,7 +580,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/" data-id="ckk6b3qmy000mewupywloj709" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/" data-id="ckk6b5pbb000mngup9ni8f97e" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2016/09/30/microsoft-intune-per-app-vpn-for-android/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -689,7 +688,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="ckk6b3qn6000rewupaz0fpkws" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/" data-id="ckk6b5pbf000rngupldrhddpj" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/12/01/publishing-owa-with-azure-application-proxy/#disqus_thread" class="article-comment-link">Comments</a>
       
