@@ -76,6 +76,104 @@ ga('send', 'pageview');
       <div class="outer">
         <section id="main">
   
+    <article id="post-detachingattaching-sccm-2012-database" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/02/01/detachingattaching-sccm-2012-database/" class="article-date">
+  <time datetime="2015-02-01T09:03:35.000Z" itemprop="datePublished">2015-02-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Uncategorized/">Uncategorized</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/02/01/detachingattaching-sccm-2012-database/">Detaching/Attaching SCCM 2012 Database</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>As part of a recent task to relocate an SCCM database to faster spindles, I went ahead used the detach/attach method to accomplish this. After the database relocation there were no issues until we tried to create a new application. I received the following error:</p>
+<p><a href="http://blog.jenujose.com/wp-content/uploads/2015/02/image001.png" target="_blank" rel="noopener"><img src="http://blog.jenujose.com/wp-content/uploads/2015/02/image001.png" alt="image001"></a></p>
+<p>&nbsp;</p>
+<p>After checking the logs, I found the following event being reported continuously:</p>
+<p><img src="http://blog.jenujose.com/wp-content/uploads/2015/02/unnamed.png" alt="unnamed"></p>
+<p>After some digging around, I found a Microsoft KB that addresses this exact problem: <a href="http://support.microsoft.com/kb/2709082" title="http://support.microsoft.com/kb/2709082" target="_blank" rel="noopener">http://support.microsoft.com/kb/2709082</a></p>
+<p>Part of the issue is that when you detach and attach a database ( a perfectly supported SQL action) the trustworthy database flag is turned to off. As a result, SCCM DLL’s are not successfully loaded. After following the steps outlined in the KB article, I was able to create applications without any issues.</p>
+<p>Recommendation: Use backup/restore method to relocate the database than using attach/detach.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/" data-id="ckk6agt3x000ibgupxmli7rl8" class="article-share-link">Share</a>
+      
+        <a href="https://jenujose.github.io/2015/02/01/detachingattaching-sccm-2012-database/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-failed-resolve-select-task-sequence" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/14/failed-resolve-select-task-sequence/" class="article-date">
+  <time datetime="2015-01-14T21:37:47.000Z" itemprop="datePublished">2015-01-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SCCM/">SCCM</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/01/14/failed-resolve-select-task-sequence/">Failed to Resolve Select Task Sequence...</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>I was working at a client with SCCM 2012 R2 OSD configuration and I was getting the error “Failed to Resolve Select Task Sequence Dependencies” every time testing the task sequence. I checked for the usual suspects and ensured that all applications and packages were distributed to the Distribution Points.</p>
+<p>Initially, I thought the application that was causing the error was corrupted. So I went ahead and refreshed the content (“Update Content” as it’s formally known”). I attempted to run the task sequence again and then noticed that the same error came up referencing a different application. I began to see a pattern and all the applications that were referenced in the error all had version 1.</p>
+<p>To increment all application versions, I used the following script that I pieced together from other sources:</p>
+<p><pre class="lang:ps decode:true" title="UpdateDP">Import-Module ‘C:\Program Files (x86)\Microsoft Configuration Manager\bin\ConfigurationManager.psd1’<br>CD SiteCode:<br>$applications=Get-CMApplication |Select-Object ApplicationName,LocalizedDisplayName, CIVersion |Where-Object CIVersion -eq “1”<br>foreach ($app in $applications)<br>{<br>$app=$app.LocalizedDisplayName<br>Write-host “Application :” “$app” -ForegroundColor DarkCyan</pre></p>
+<p>$dpttypes=Get-CMDeploymentType -ApplicationName $app</p>
+<p>foreach ($dpt in $dpttypes)<br>{<br>$dptname=$dpt.LocalizedDisplayName<br>Write-Host “Deployment Type:” “$dptname” -ForegroundColor DarkGreen<br>Update-CMDistributionPoint -ApplicationName $app -DeploymentTypeName $dptname<br>}<br>}<br>Note: Even after changing all versions to 2, I still had one or two apps needed to be incremented before I could proceed with the TS.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/" data-id="ckk6agt41000rbgupmeze5zny" class="article-share-link">Share</a>
+      
+        <a href="https://jenujose.github.io/2015/01/14/failed-resolve-select-task-sequence/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-a-read-operation-on-a-large-object-failed" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/01/02/a-read-operation-on-a-large-object-failed/" class="article-date">
@@ -109,7 +207,7 @@ ga('send', 'pageview');
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="ckj1pd58b0009foupu0pd19vf" class="article-share-link">Share</a>
+      <a data-url="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/" data-id="ckk6agt40000pbguprshluxkv" class="article-share-link">Share</a>
       
         <a href="https://jenujose.github.io/2015/01/02/a-read-operation-on-a-large-object-failed/#disqus_thread" class="article-comment-link">Comments</a>
       
@@ -167,7 +265,7 @@ ga('send', 'pageview');
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/">September 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
     </div>
   </div>
 
@@ -180,6 +278,14 @@ ga('send', 'pageview');
       <ul>
         
           <li>
+            <a href="/2021/01/18/Exploring-Microsoft-Tunnel-Part-2/">Exploring Microsoft Tunnel (Part 2)</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/13/#Troubleshooting/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2020/11/09/Exploring-Microsoft-Tunnel/">Exploring Microsoft Tunnel (Part 1)</a>
           </li>
         
@@ -189,14 +295,6 @@ ga('send', 'pageview');
         
           <li>
             <a href="/2019/04/14/Gotcha's with Azure Multi-Factor Authentication/">Azure Multi-Factor Authentication &amp; Conditional Access Policy Tips</a>
-          </li>
-        
-          <li>
-            <a href="/2017/12/22/Shared-Mailboxes-don-t-automap-to-Outlook-in-Exchange-Online/">Shared Mailboxes don&#39;t automap to Outlook in Exchange Online</a>
-          </li>
-        
-          <li>
-            <a href="/2016/10/13/adfs-2016-conditional-access-device-claims/">ADFS, Device Claims &amp; Conditional Access</a>
           </li>
         
       </ul>
@@ -211,7 +309,7 @@ ga('send', 'pageview');
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2020 Jenu Jose<br>
+      &copy; 2021 Jenu Jose<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
